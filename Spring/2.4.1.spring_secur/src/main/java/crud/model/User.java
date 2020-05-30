@@ -10,10 +10,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-@Component
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
+    //public class User  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -29,6 +29,12 @@ public class User implements UserDetails {
     private Set<Role> userRoles;
 
     public User() {
+    }
+
+    public User(String name, String password, Set<Role> userRoles) {
+        this.name = name;
+        this.password = password;
+        this.userRoles = userRoles;
     }
 
     public void setPassword(String password) {

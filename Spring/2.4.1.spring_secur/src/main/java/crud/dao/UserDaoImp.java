@@ -4,8 +4,8 @@ import crud.model.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -27,16 +27,20 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    @Transactional
     public void delete(Long id) {
         User user = sessionFactory.getCurrentSession().find(User.class, id);
         sessionFactory.getCurrentSession().remove(user);
     }
 
     @Override
-    @Transactional
     public void editUser(User user) {
-        delete(user.getId());
-        add(user);
+        sessionFactory.getCurrentSession().update(user);
+    }
+
+    @Override
+    public User findUserByUsername(String username) {
+        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User where name = :name");
+        query.setParameter("name", username);
+        return query.getSingleResult();
     }
 }

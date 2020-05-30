@@ -1,10 +1,7 @@
 package crud.config;
 
 
-import crud.dao.UserDetailsDao;
-import crud.dao.UserDetailsDaoImpl;
-import crud.model.User;
-import crud.service.UserDetailsServiceImpl;
+import crud.security.security_sevice.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,18 +18,8 @@ import org.springframework.web.servlet.view.JstlView;
 public class WebConfig implements WebMvcConfigurer {
 
     @Bean
-    public User getUser() {
-        return new User();
-    }
-
-    @Bean
     public UserDetailsService getUserDetails() {
         return new UserDetailsServiceImpl();
-    }
-
-    @Bean
-    public UserDetailsDao getDao() {
-        return new UserDetailsDaoImpl();
     }
 
     @Override

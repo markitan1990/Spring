@@ -12,4 +12,7 @@ public interface UserDao {
     void delete(Long id);
 
     void editUser(User user);
+
+    User findUserByUsername(String username);
+
 }
