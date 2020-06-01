@@ -195,7 +195,7 @@
     <form:label path="password">Password</form:label>
     <form:input path="password"/>
     <div class="rolescl">
-        <form:checkboxes items="${userRole}" path="userRoles" element="div"/>
+        <form:checkboxes items="${userRole}" path="roles" element="div"/>
     </div>
     <input type="submit" value="Save"/>
 </form:form>
@@ -216,7 +216,7 @@
             <div class="col"><c:out value="${user.name}"/></div>
             <div class="col"><c:out value="${user.password}"/></div>
             <div class="col">
-                <c:forEach var="grantedAuthorities" items="${user.userRoles}">
+                <c:forEach var="grantedAuthorities" items="${user.roles}">
                     <c:out value="${grantedAuthorities.name}"/><br>
                 </c:forEach>
             </div>
@@ -236,7 +236,7 @@
                     <form:label path="password">Password</form:label>
                     <form:input path="password" type="text" class="inp" name="password" value="${user.password}"/>
                     <div class="rolescl">
-                        <form:checkboxes items="${userRole}" path="userRoles" element="div"/>
+                        <form:checkboxes items="${userRole}" path="roles" element="div"/>
                     </div>
                     <input type="submit" value="Edit" onclick="modalOff()" class="inp" name="Edit"/>
                 </form:form>

@@ -2,7 +2,6 @@ package crud.security.handler;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
 
 public class TargetUrlimpl implements TargetUrl {
 

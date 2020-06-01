@@ -1,9 +1,10 @@
 package crud.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -13,28 +14,29 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
-    //public class User  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private long id;
     @Column(name = "name")
     private String name;
     @Column(name = "password")
     private String password;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> userRoles;
+    private Set<Role> roles;
 
     public User() {
     }
 
-    public User(String name, String password, Set<Role> userRoles) {
+    public User(String name, String password, Set<Role> roles) {
         this.name = name;
         this.password = password;
-        this.userRoles = userRoles;
+        this.roles = roles;
     }
 
     public void setPassword(String password) {
@@ -57,23 +59,20 @@ public class User implements UserDetails {
         this.name = name;
     }
 
-    public Set<Role> getUserRoles() {
-        return userRoles;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setUserRoles(Set<Role> userRoles) {
-        this.userRoles = userRoles;
+    public void setRoles(Set<Role> userRoles) {
+        this.roles = userRoles;
     }
 
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities
                 = new HashSet<>();
-        for (Role role : getUserRoles()) {
+        for (Role role : getRoles()) {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
-            role.getUsers().stream()
-                    .map(p -> new SimpleGrantedAuthority(p.getName()))
-                    .forEach(authorities::add);
         }
         return authorities;
     }

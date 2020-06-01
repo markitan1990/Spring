@@ -40,10 +40,10 @@ public class HomeController {
 
     @PostMapping(value = "/admin/addUser")
     public String saveUser(@ModelAttribute("newUser") User user) {
-        if (user.getUserRoles().size() == 0) {
+        if (user.getRoles().size() == 0) {
             Set<Role> set = new HashSet<>();
             set.add(new Role("anonim"));
-            user.setUserRoles(set);
+            user.setRoles(set);
         }
         userService.add(user);
         return "redirect:/admin";
@@ -66,10 +66,10 @@ public class HomeController {
 
     @PostMapping(value = "/admin/editUser")
     public String editUser(@ModelAttribute User user) {
-        if (user.getUserRoles().size() == 0) {
+        if (user.getRoles().size() == 0) {
             Set<Role> set = new HashSet<>();
             set.add(new Role("anonim"));
-            user.setUserRoles(set);
+            user.setRoles(set);
         }
         userService.edit(user);
         return "redirect:/admin";
@@ -87,9 +87,9 @@ public class HomeController {
 
     @GetMapping(value = "login")
     public String loginPage(Authentication authentication) {
-        if (authentication != null) {
-            return "redirect:/" + TargetUrlimpl.getInstance().getTargetUrl(authentication);
-        }
+//        if (authentication != null) {
+//            return "redirect:/" + TargetUrlimpl.getInstance().getTargetUrl(authentication);
+//        }
         return "login";
     }
 }
