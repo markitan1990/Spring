@@ -1,7 +1,6 @@
 package crud.controller;
 
 import crud.model.User;
-import crud.service.RoleService;
 import crud.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,8 +16,6 @@ import java.util.List;
 public class AdminController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private RoleService roleService;
 
     @GetMapping
     public void getListUsers(ModelMap model) {
@@ -33,7 +30,7 @@ public class AdminController {
 
     @PostMapping(value = "/addUser")
     public String saveUser(@ModelAttribute("newUser") User user) {
-        userService.add(roleService.updateUserRoles(user));
+        userService.add(user);
         return "redirect:/admin";
     }
 
@@ -45,7 +42,7 @@ public class AdminController {
     }
     @PostMapping(value = "/editUser")
     public String editUser(@ModelAttribute User user) {
-        userService.edit(roleService.updateUserRoles(user));
+        userService.edit(user);
         return "redirect:/admin";
     }
 }
