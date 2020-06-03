@@ -11,7 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -22,24 +24,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-        auth.inMemoryAuthentication().withUser("admin").password("admin").roles("admin");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+        filter.setEncoding("UTF-8");
+        filter.setForceEncoding(true);
+        http.addFilterBefore(filter, CsrfFilter.class);
         http
                 .authorizeRequests()
+                .antMatchers("/login").not().hasAnyAuthority("admin", "user")
                 .antMatchers("/hello").hasAuthority("user")
                 .antMatchers("/admin/**").hasAuthority("admin")
-                .antMatchers("/login").not().authenticated()
-                .antMatchers("/home").permitAll()
                 .anyRequest()
                 .authenticated();
 
         http.formLogin()
                 .loginPage("/login")
-                .successHandler(new LoginSuccessHandler())
                 .loginProcessingUrl("/login")
+                .successHandler(new LoginSuccessHandler())
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
                 .permitAll();

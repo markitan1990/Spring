@@ -1,6 +1,7 @@
 package crud.security.handler;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,15 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest req,
                                         HttpServletResponse resp,
                                         Authentication authentication) throws IOException {
-        resp.sendRedirect(TargetUrlimpl.getInstance().getTargetUrl(authentication));
+        String url = "login";
+        for (GrantedAuthority s : authentication.getAuthorities()) {
+            if (s.getAuthority().equals("admin")) {
+                url = "admin";
+                break;
+            } else {
+                url = "hello";
+            }
+        }
+        resp.sendRedirect(url);
     }
 }

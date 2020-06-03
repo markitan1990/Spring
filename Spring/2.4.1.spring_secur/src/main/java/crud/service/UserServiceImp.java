@@ -43,4 +43,5 @@ public class UserServiceImp implements UserService {
     public void edit(User user) {
         userDao.editUser(user);
     }
+
 }

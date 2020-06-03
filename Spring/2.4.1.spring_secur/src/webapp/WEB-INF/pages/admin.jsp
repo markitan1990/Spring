@@ -1,8 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <title>ListUsers</title>
 </head>
 <style>
@@ -195,7 +197,8 @@
     <form:label path="password">Password</form:label>
     <form:input path="password"/>
     <div class="rolescl">
-        <form:checkboxes items="${userRole}" path="roles" element="div"/>
+<%--        <form:checkboxes  items="${userRole}" path="roles" element="div"/>--%>
+        <form:checkbox path="roles" value="admin" label="admin"/>
     </div>
     <input type="submit" value="Save"/>
 </form:form>

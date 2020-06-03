@@ -1,78 +1,27 @@
 package crud.controller;
 
 import crud.model.Role;
-import crud.model.User;
-import crud.security.handler.TargetUrlimpl;
-import crud.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @ControllerAdvice
 @RequestMapping("/")
 public class HomeController {
-    @Autowired
-    private UserService userService;
-
-    @GetMapping(value = "admin")
-    public ModelAndView getListUsers(ModelMap model) {
-        List<User> list = userService.listUsers();
-        List<String> checkbox = new ArrayList<>();
-        checkbox.add("admin");
-        checkbox.add("user");
-        checkbox.add("anonim");
-        model.addAttribute("users", list);
-        model.addAttribute("userRole", checkbox);
-        model.addAttribute("newUser", new User());
-        return new ModelAndView("admin", model);
-    }
-
-    @PostMapping(value = "/admin/addUser")
-    public String saveUser(@ModelAttribute("newUser") User user) {
-        if (user.getRoles().size() == 0) {
-            Set<Role> set = new HashSet<>();
-            set.add(new Role("anonim"));
-            user.setRoles(set);
-        }
-        userService.add(user);
-        return "redirect:/admin";
-    }
-
-
-    @GetMapping(value = "admin/deleteUser")
-    @ResponseBody
-    public String deleteUser(@RequestParam(value = "Delete") Long id, HttpServletResponse response) throws IOException {
-        userService.delete(id);
-        response.sendRedirect("/admin");
-        return "admin";
-    }
-
 
     @GetMapping(value = "home")
-    public ModelAndView home(ModelMap model) {
-        return new ModelAndView("/home", model);
-    }
-
-    @PostMapping(value = "/admin/editUser")
-    public String editUser(@ModelAttribute User user) {
-        if (user.getRoles().size() == 0) {
-            Set<Role> set = new HashSet<>();
-            set.add(new Role("anonim"));
-            user.setRoles(set);
-        }
-        userService.edit(user);
-        return "redirect:/admin";
+    public String home() {
+        return "home";
     }
 
     @GetMapping(value = "hello")
@@ -87,9 +36,15 @@ public class HomeController {
 
     @GetMapping(value = "login")
     public String loginPage(Authentication authentication) {
-//        if (authentication != null) {
-//            return "redirect:/" + TargetUrlimpl.getInstance().getTargetUrl(authentication);
-//        }
+        if (authentication != null) {
+            for (GrantedAuthority role : authentication.getAuthorities()) {
+                if (role.getAuthority().equals("admin")) {
+                    return "redirect:/admin";
+                } else {
+                    return "redirect:/hello";
+                }
+            }
+        }
         return "login";
     }
 }
