@@ -1,0 +1,27 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login page</title>
+    <div th:replace="~{fragments/header.html :: header_link}"></div>
+</head>
+<body>
+<div class="formContainer">
+    <form class="loginForm" action="/login" method="post">
+        <h2>Please sign in</h2>
+        <div class="form-group">
+            <input autocomplete="" type="email" name="j_email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                   placeholder="Email address">
+        </div>
+        <div class="form-group">
+            <input type="password" name="j_password" class="form-control" id="exampleInputPassword1"
+                   placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary">Sign in</button>
+    </form>
+</div>
+
+<div th:replace="~{fragments/header.html :: footer_script}"></div>
+</body>
+</html>
