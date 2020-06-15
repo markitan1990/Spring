@@ -1,0 +1,32 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title id = "title"></title>
+</head>
+<body>
+<div th:replace="~{fragments/header.html :: header_link}"></div>
+<div th:replace="~{fragments/header.html :: top_nav}"></div>
+
+<section class="home_page">
+    <div class="row w-100">
+        <div class="col-2 left_nav">
+            <div th:replace="~{fragments/navigate.html :: navigate}"></div>
+        </div>
+        <div class="col-10 info_page">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div th:replace="~{fragments/admin.html :: admin}"></div>
+                <div th:replace="~{fragments/user.html :: user}"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:replace="~{fragments/modal.html :: modal}"></div>
+
+<div th:replace="~{fragments/header.html :: footer_script}"></div>
+<script src="../../static/js/script.js" th:src="@{/js/script.js}"></script>
+
+</body>
+</html>

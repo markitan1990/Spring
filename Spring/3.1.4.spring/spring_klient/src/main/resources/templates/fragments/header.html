@@ -1,0 +1,33 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <div th:fragment="header_link">
+        <link rel="stylesheet" href="webjars/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css"
+              href="../static/css/style.css" th:href="@{/css/style.css}"/>
+        <link id="favicon" rel="shortcut icon" type="image/x-icon" href="../../static/favicon.ico" th:href="@{favicon.ico}"/>
+
+    </div>
+</head>
+<body>
+<div th:fragment="top_nav">
+    <nav class="navbar navbar-light  d-flex justify-content-between" id="scroll_header">
+    <span class="text-white d-flex" style="font-size: 20px">
+        <div id = "principalInfo"></div>
+        <div> with roles: </div>
+        <div id = "principalRoles" style="margin: 0 5px; text-transform: uppercase;"></div>
+    </span>
+        <span>
+        <a href="/logout" id="logout">Logout</a>
+    </span>
+    </nav>
+</div>
+<div th:fragment="footer_script">
+    <script src="webjars/jquery/3.5.1/jquery.min.js"></script>
+    <script src="webjars/popper.js/1.16.0/popper.min.js"></script>
+    <script src="webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</div>
+</body>
+</html>
