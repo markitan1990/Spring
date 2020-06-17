@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -24,14 +23,6 @@ public class UserDto implements UserDetails{
     private String password;
     private Set<RoleDto> roles;
 
-//    public UserDto(String email, String password) {
-//        this.email = email;
-//        this.password = password;
-//    }
-//    public UserDto(String email ) {
-//        this.email = email;
-//    }
-//
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities
                 = new HashSet<>();

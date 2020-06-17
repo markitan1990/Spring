@@ -16,7 +16,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User  {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -32,18 +32,4 @@ public class User  {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-
-//    public User(String firstName, String lastName, Long age, String email, String password ) {
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.age = age;
-//        this.email = email;
-//        this.password = password;
-//    }
-//
-//    public User(String email, String password) {
-//        this.email = email;
-//        this.password = password;
-//    }
-
 }

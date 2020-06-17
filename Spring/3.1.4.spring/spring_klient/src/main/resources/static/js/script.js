@@ -66,6 +66,7 @@ $("#addUserForm").click(
                 isAdmin();
                 setTimeout(function () {
                     $("#nav-home-tab").trigger('click');
+                    $('#addNUser')[0].reset();
                 }, 500);
             }
         });

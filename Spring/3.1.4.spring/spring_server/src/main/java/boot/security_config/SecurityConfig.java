@@ -8,34 +8,29 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public static final String REALM_NAME = "real_name";
-
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("admin").password(passwordEncoder().encode("admin")).roles("admin")
-                .and()
-                .withUser("user").password(passwordEncoder().encode("user")).roles("user");
+                .withUser("admin").password(passwordEncoder().encode("admin"))
+                .authorities("admin");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        CharacterEncodingFilter filter = new CharacterEncodingFilter();
-        filter.setEncoding("UTF-8");
-        filter.setForceEncoding(true);
-        http.addFilterBefore(filter, CsrfFilter.class);
         http
-                .authorizeRequests()
-                .anyRequest().permitAll()
+                .httpBasic()
                 .and()
-                .httpBasic();
+                .authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
+                .csrf()
+                .disable();
+
     }
 
     @Bean

@@ -50,10 +50,6 @@ public class UserService {
     public User findUserById(Long id) {
         return userRepository.findUserById(id);
     }
-//
-//    public User findUserByEmailAndPassword(String email, String password) {
-//        return userRepository.findUserByEmailAndPassword(email, password);
-//    }
 
     public User updateUserRoles(User user) {
         Set<Role> set = new HashSet<>(); // If lost of roles is empty, will be add default role "user"

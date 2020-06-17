@@ -43,8 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/img/**",
                         "/webjars/**").permitAll()
                 .antMatchers("/home").authenticated()
-                .antMatchers("/addUser", "/modal", "/deleteUser", "/editUser").hasAuthority("admin")
-                .antMatchers("/user").hasAuthority("user")
                 .antMatchers("/login").permitAll()
                 .anyRequest()
                 .authenticated();

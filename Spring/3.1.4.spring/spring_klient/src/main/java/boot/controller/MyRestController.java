@@ -4,13 +4,12 @@ import boot.dto.RoleDto;
 import boot.dto.UserDto;
 import boot.service.RestTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-//import org.springframework.security.core.Authentication;
 
 @RestController
 public class MyRestController {
@@ -31,10 +30,8 @@ public class MyRestController {
     }
 
     @GetMapping(value = "/findUser")
-    public UserDto getUser(@ModelAttribute UserDto user) {
-        UserDto userDto = new UserDto();
-        user.setEmail("1@1");
-        return restTemplateService.findUserByEmail(user.getEmail());
+    public UserDto getUser(Authentication authentication) {
+        return (UserDto) authentication.getPrincipal();
     }
 
     @GetMapping(value = "/editUser/{id}")
