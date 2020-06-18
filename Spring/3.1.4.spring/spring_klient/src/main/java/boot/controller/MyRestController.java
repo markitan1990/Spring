@@ -4,6 +4,8 @@ import boot.dto.RoleDto;
 import boot.dto.UserDto;
 import boot.service.RestTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,36 +18,45 @@ public class MyRestController {
     @Autowired
     private RestTemplateService restTemplateService;
 
-    @GetMapping(value = "/addUser")
-    public void addUser(@ModelAttribute UserDto user,
-                        @RequestParam(value = "n_roles", defaultValue = "user") List<String> roles) {
+    @PostMapping(value = "/addUser")
+    public ResponseEntity<Void> addUser(@ModelAttribute UserDto user,
+                                        @RequestParam(value = "n_roles", defaultValue = "user") List<String> roles) {
         Set<RoleDto> roleSet = roles.stream().map(a -> new RoleDto(a)).collect(Collectors.toSet());
         user.setRoles(roleSet);
         restTemplateService.addUser(user);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @GetMapping(value = "/getUsers")
-    public List<UserDto> getUsers() {
-        return restTemplateService.getUsers();
+    public ResponseEntity<List<UserDto>> getUsers() {
+        List<UserDto> users = restTemplateService.getUsers();
+        return users != null && !users.isEmpty()
+                ? new ResponseEntity<List<UserDto>>(users, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/findUser")
-    public UserDto getUser(Authentication authentication) {
-        return (UserDto) authentication.getPrincipal();
+    public ResponseEntity<UserDto> getUser(Authentication authentication) {
+        UserDto userDto = (UserDto) authentication.getPrincipal();
+        return userDto != null
+                ? new ResponseEntity<UserDto>(userDto, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/editUser/{id}")
-    public void editUser(
+    @PostMapping(value = "/editUser/{id}")
+    public ResponseEntity<Void> editUser(
             @PathVariable(name = "id") Long id,
             @ModelAttribute UserDto user,
             @RequestParam(value = "e_roles", defaultValue = "user") List<String> roles) {
         Set<RoleDto> roleSet = roles.stream().map(a -> new RoleDto(a)).collect(Collectors.toSet());
         user.setRoles(roleSet);
         restTemplateService.editUser(user);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/deleteUser/{id}")
-    public void delete(@PathVariable(name = "id") Long id) {
+    @DeleteMapping(value = "/deleteUser/{id}")
+    public ResponseEntity<Void> delete(@PathVariable(name = "id") Long id) {
         restTemplateService.delete(id);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }

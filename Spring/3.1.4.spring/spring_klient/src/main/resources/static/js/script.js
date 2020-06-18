@@ -59,7 +59,7 @@ $("#addUserForm").click(
         var add_u = $("#addNUser").serialize();
         $.ajax({
             url: "/addUser",
-            type: "get",
+            type: "POST",
             data: add_u,
             success: function () {
                 $("#table_tbody").empty();
@@ -78,7 +78,7 @@ function deleteU(data) {
     var id = data.id;
     $.ajax({
         url: "/deleteUser/" + id,
-        type: "get",
+        type: "DELETE",
         success: function (data) {
             $("#table_tbody").empty();
 
@@ -113,8 +113,8 @@ function editU(id) {
     var id = id.id;
     var edit = $("#formForEdit").serialize();
     $.ajax({
-        url: "/editUser/" + id,
-        type: "get",
+        url: '/editUser/' + id,
+        type: 'POST',
         data: edit,
         success: function (data) {
             $("#table_tbody").empty();
